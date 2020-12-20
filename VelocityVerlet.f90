@@ -22,7 +22,10 @@ module velocity_verlet
                 !>velocity verlet subroutine
 
                 subroutine verlet_solver(field,init_pos,init_vel,init_acc,pos_hist,vel_hist,acc_hist,dx,dy,dt)
-                        real(kind=REAL64),  dimension(:,:),     intent(in)    :: field ! Electric field which needs to be taken in
+                        real(kind=REAL64),  dimension(:,:),     intent(in)    :: Ex, Ey ! Electric field which needs to be taken in
+                                                                                 !Should it be a 3-D array with both dimension or a
+                                                                                 !2D one?
+
                         real(kind=REAL64),  dimension(2),       intent(in)    :: init_pos, init_vel, init_acc !initial conditions
                         real(kind=REAL64),  dimension(0:1000,2),intent(out)   :: pos_hist, vel_hist, acc_hist !time histories
                         real(kind=REAL64),                      intent(in)    :: dt,dx,dy !pass it as a type? feels clunky
@@ -33,13 +36,17 @@ module velocity_verlet
                         pos_hist(0) = init_pos   !Adding initial conditions
                         vel_hist(0) = init_vel
                        
-                        init_acc = -1* field(current_cell(init_pos))
+                        init_acc(1) = -1* Ex(current_cell(init_pos))
+                        init_acc(2) = -1* Ey(current_cell(init_pos))
 
                         vel_hist(0) = init_acc
 
+                        !Actual Velocity Verlet Algorithm
+
                         do i = 1,1000
                             pos_hist(i,:) = pos_hist(i-1,:) + vel_hist(i-1,:)*dt + 0.5*(vel_hist(i-1,:)**2)*dt**2
-                            acc_hist(i,:) = -1*field(current_cell(pos_hist(i-1,:)))
+                            acc_hist(i,1) = -1*Ex(current_cell(pos_hist(i-1,:)))
+                            acc_hist(i,2) = -1*Ey(current_cell(pos_hist(i-1,:)))
                             vel_hist(i,:) = vel_hist(i-1,:) + 0.5*dt*(acc_hist(i,:)+acc_hist(i-1,:))
                         end do 
 
