@@ -10,7 +10,7 @@ module velocity_verlet
                 
                 function  current_cell(exact_pos) 
                         real(kind=REAL64), dimension(2)                       :: exact_pos
-                        real(kind=int32) , dimension(2)                       :: current_cell
+                        real(kind=INT32) , dimension(2)                       :: current_cell
 
                         current_cell(1) = floor((exact_pos(1) +1.0_dp)/dx) + 1 !>I know the pdf says "-1.0_dp"
                         current_cell(2) = floor((exact_pos(1) +1.0_dp)/dy) + 1 !>But the maths seems weird to me here. Correct
@@ -29,7 +29,7 @@ module velocity_verlet
                         real(kind=REAL64),  dimension(2),       intent(in)    :: init_pos, init_vel, init_acc !initial conditions
                         real(kind=REAL64),  dimension(0:1000,2),intent(out)   :: pos_hist, vel_hist, acc_hist !time histories
                         real(kind=REAL64),                      intent(in)    :: dt,dx,dy !pass it as a type? feels clunky
-                        integer(kind=int32)                                   :: i
+                        integer(kind=INT32)                                   :: i
 
 
 
