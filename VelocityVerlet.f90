@@ -23,12 +23,12 @@ module velocity_verlet
 
                 subroutine verlet_solver(field,init_pos,init_vel,init_acc,pos_hist,vel_hist,acc_hist,dx,dy,dt)
                         real(kind=REAL64),  dimension(:,:),     intent(in)    :: Ex, Ey ! Electric field which needs to be taken in
-                                                                                 !Should it be a 3-D array with both dimension or a
-                                                                                 !2D one?
+                                                                                 !Should it be a 3-D array with both dimensions or a
+                                                                                 !two 2D ones?
 
                         real(kind=REAL64),  dimension(2),       intent(in)    :: init_pos, init_vel, init_acc !initial conditions
                         real(kind=REAL64),  dimension(0:1000,2),intent(out)   :: pos_hist, vel_hist, acc_hist !time histories
-                        real(kind=REAL64),                      intent(in)    :: dt,dx,dy !pass it as a type? feels clunky
+                        real(kind=REAL64),                      intent(inout) :: dt,dx,dy !pass it as a type? feels clunky
                         integer(kind=INT32)                                   :: i
 
 
