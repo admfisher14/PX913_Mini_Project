@@ -11,7 +11,7 @@ MODULE EQ_FIELD
     REAL(REAL64), DIMENSION(:,:), ALLOCATABLE :: f_c
 !The rho specified by the user
     REAL(REAL64), DIMENSION(:,:), INTENT(IN) :: rho
-!Grid size.
+!Grid size. !Can we just fetch the dimensions of the array using "SHAPE(f_c)" so that we have fewer inputs
     INTEGER, INTENT(IN) :: nx,ny
 !Step size.
     REAL(REAL64) :: dx,dy
@@ -26,7 +26,9 @@ MODULE EQ_FIELD
 
 !This is the initial field charge at iteration t = 0, one can change it but it should converge no matter the initial condition.
     f_c = 0.0_REAL64
-    
+
+!I have noticed that this algorithm does not take guard cells into account when updating, is that a possible cause for the error? - Omar
+
 !This do while loops does the finite difference until a certain tolerance is met.     
     DO 
       DO i =  1, nx  
