@@ -1,47 +1,59 @@
 PROGRAM Main 
 
   USE ISO_FORTRAN_ENV
-  USE EQ_FIELD  
+  USE EQ_FIELD
+  USE velocity_verlet  
   !USE command_line
   !USE domain_tools
-  !USE ERROR_CALC
+  USE ERROR_CALC
 
   IMPLICIT NONE 
 
   LOGICAL :: success 
   !CHARACTER(LEN=20) :: problem 
-  INTEGER :: dx, dy ,i,j
+  INTEGER(INT32) :: nx, ny ,i,j
   REAL(REAL64), DIMENSION(:,:), ALLOCATABLE :: problem, solution
-  REAL(REAL64) :: h,k,error 
+  REAL(REAL64) :: dx,dy,dt,error
+  REAL(REAL64), DIMENSION(2) :: init_pos,init_vel, init_acc
+  REAL(REAL64), DIMENSION(0:1000,2) ::  pos_hist, vel_hist, acc_hist
 
-  dx = 6
-  dy= 6
+
+
+  init_pos = 0.0_REAL64
+  init_vel = 0.1_REAL64
+
+
+  nx = 6
+  ny= 6
   
-  h = 2.0_REAL64/(dx-1) 
-  k = 2.0_REAL64/(dy-1)
+  dy = 2.0_REAL64/(nx-1) 
+  dx = 2.0_REAL64/(ny-1)
+  dt = 0.1_REAL64
   
-  ALLOCATE(problem(1:dx, 1:dy))
-  ALLOCATE(solution(0:dx+1, 0:dy+1))
+  ALLOCATE(problem(1:nx, 1:ny))
+  ALLOCATE(solution(0:nx+1, 0:ny+1))
 
   problem = 0.0_REAL64 
   !solution = 0.0_REAL64
   
-  DO i = 1, dx 
-    DO j = 1, dy 
-      problem(i,j) = EXP(-((h*(i-1)-1)/0.1_REAL64)**2-((k*(j-1)-1)/0.1_REAL64)**2)
-    END DO
-  END DO
+ ! DO i = 1, nx 
+  !  DO j = 1, ny 
+   !   problem(i,j) = EXP(-((h*(i-1)-1)/0.1_REAL64)**2-((k*(j-1)-1)/0.1_REAL64)**2)
+   ! END DO
+ ! END DO
   
-  !DO i = 1, dx 
-    !DO j = 1, dy
+  !DO i = 1, nx 
+    !DO j = 1, ny
       !problem(i,j) = EXP(-((h*(i-1)-1+0.25_REAL64)/0.1_REAL64)**2-((k*(j-1)-1+0.25_REAL64)/0.1_REAL64)**2)
     !END DO
   !END DO 
   !solution = f_c(problem, X, Y)
   
-  solution = f_c(problem, h,k,dx,dy)
+  solution = f_c(problem, dx,dy,nx,ny)
   
-  print*, solution 
+
+  CALL verlet_solver(solution, init_pos,init_vel,init_acc,pos_hist,vel_hist,acc_hist,dx,dy,dt,nx,ny)
   
+  print*, pos_hist(1000,:)
 
 END PROGRAM Main

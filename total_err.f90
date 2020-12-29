@@ -9,7 +9,9 @@ MODULE ERROR_CALC
 
   FUNCTION err_calc(A,B,dx,dy,nx,ny)
 !A is phi and B is rho.
-    REAL(REAL64), DIMENSION(:,:):: A, B
+!Fortran assumes arrays start at 1 when passed to a function, so LB must be specified for A.
+    REAL(REAL64), DIMENSION(0:,0:):: A
+    REAL(REAL64), DIMENSION(:,:):: B
     REAL(REAL64) :: err_calc
 !The step size for the x and y coordinates finite difference method.
     REAL(REAL64), INTENT(IN):: dx, dy

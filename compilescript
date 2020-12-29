@@ -1,0 +1,11 @@
+#!/bin/bash
+
+myprogramfiles="total_err.f90 eq_field.f90 VelocityVerlet.f90 test.f90"
+
+outfile="program.out"
+
+fc=gfortran
+fflags=`nf-config --fflags`
+flibs=`nf-config --flibs`
+
+$fc -I/usr/include/ -g $fflags $myprogramfiles $flibs -o $outfile -std=f2008

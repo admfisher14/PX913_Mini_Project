@@ -11,7 +11,7 @@ MODULE EQ_FIELD
     REAL(REAL64), DIMENSION(:,:), ALLOCATABLE :: f_c
 !The rho specified by the user
     REAL(REAL64), DIMENSION(:,:), INTENT(IN) :: rho
-!Grid size. !Can we just fetch the dimensions of the array using "SHAPE(f_c)" so that we have fewer inputs
+!Grid size.
     INTEGER, INTENT(IN) :: nx,ny
 !Step size.
     REAL(REAL64) :: dx,dy
