@@ -3,9 +3,7 @@ module velocity_verlet
         implicit none
 
         contains
-
-
-
+        
                 !>function for working out the indices for the cell's current position
                 
                 function  get_acc(exact_pos,dx,dy,Ex,Ey) result (acc)
@@ -65,14 +63,5 @@ module velocity_verlet
                             acc_hist(i,:) = get_acc(pos_hist(i-1,:),dx,dy,Ex,Ey)
                             vel_hist(i,:) = vel_hist(i-1,:) + 0.5*dt*(acc_hist(i,:)+acc_hist(i-1,:))
                         end do 
-
-
-
                 end subroutine
-
-
-
-
-
-
 end module
