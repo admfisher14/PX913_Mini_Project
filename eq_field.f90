@@ -38,7 +38,7 @@ MODULE EQ_FIELD
       END DO 
       tot_err = err_calc(f_c, rho, dx, dy, nx, ny)
       print*, tot_err
-      IF (tot_err < tol) STOP  
+      IF (tot_err < tol) EXIT  
     END DO 
     
   END FUNCTION f_c 
