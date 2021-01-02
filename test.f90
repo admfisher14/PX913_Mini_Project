@@ -19,12 +19,13 @@ PROGRAM Main
 
 
 
-  init_pos = 0.0_REAL64
-  init_vel = 0.1_REAL64
+  init_pos(1) = 0.0_REAL64
+  init_pos(2) = 0.1_REAL64
+  init_vel = 0.0_REAL64
 
 
-  nx = 6
-  ny= 6
+  nx = 100
+  ny= 100
   
   dy = 2.0_REAL64/(nx-1) 
   dx = 2.0_REAL64/(ny-1)
@@ -36,11 +37,11 @@ PROGRAM Main
   problem = 0.0_REAL64 
   !solution = 0.0_REAL64
   
- ! DO i = 1, nx 
-  !  DO j = 1, ny 
-   !   problem(i,j) = EXP(-((h*(i-1)-1)/0.1_REAL64)**2-((k*(j-1)-1)/0.1_REAL64)**2)
-   ! END DO
- ! END DO
+ DO i = 1, nx 
+    DO j = 1, ny 
+      problem(i,j) = EXP(-((dx*(i-1)-1)/0.1_REAL64)**2-((dy*(j-1)-1)/0.1_REAL64)**2)
+   END DO
+ END DO
   
   !DO i = 1, nx 
     !DO j = 1, ny
@@ -54,6 +55,29 @@ PROGRAM Main
 
   CALL verlet_solver(solution, init_pos,init_vel,init_acc,pos_hist,vel_hist,acc_hist,dx,dy,dt,nx,ny)
   
-  print*, pos_hist(1000,:)
+   open(11,file="positions.txt",status='replace')
 
+  do i = 0,1000
+    write(11,*) pos_hist(i,:)
+  end do
+
+  close(11)
+ 
+  open(12,file="velocities.txt",status='replace')
+
+  do i = 0,1000
+    write(12,*) vel_hist(i,:)
+  end do
+
+  close(12)
+
+    open(13,file="acceleration.txt",status='replace')
+
+  do i = 0,1000
+    write(13,*) acc_hist(i,:)
+  end do
+
+  close(13)
+ 
+ 
 END PROGRAM Main

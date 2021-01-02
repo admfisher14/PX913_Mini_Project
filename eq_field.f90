@@ -27,7 +27,6 @@ MODULE EQ_FIELD
 !This is the initial field charge at iteration t = 0, one can change it but it should converge no matter the initial condition.
     f_c = 0.0_REAL64
 
-!I have noticed that this algorithm does not take guard cells into account when updating, is that a possible cause for the error? - Omar
 
 !This do while loops does the finite difference until a certain tolerance is met.     
     DO 
