@@ -24,7 +24,7 @@ module velocity_verlet
 
                 !>velocity verlet subroutine
 
-                subroutine verlet_solver(field,init_pos,init_vel,init_acc,pos_hist,vel_hist,acc_hist,dx,dy,dt,nx,ny)
+                subroutine verlet_solver(field,init_pos,init_vel,init_acc,pos_hist,vel_hist,acc_hist,dx,dy,dt,nx,ny, Ex,Ey)
                         real(kind=REAL64),  dimension(0:,0:),     intent(in)  :: field ! Electric field which needs to be taken in
                                                                                  !Should it be a 3-D array with both dimensions or
                                                                                  !two 2D ones?
@@ -35,9 +35,9 @@ module velocity_verlet
                         real(kind=REAL64),                      intent(in)    :: dt,dx,dy !pass it as a type? feels clunky
                         integer(kind=INT32),                    intent(in)    :: nx,ny
 
-                        integer(kind=INT32)                                   :: i,j
-                        real(kind=REAL64),  dimension(:,:), allocatable       :: Ex,Ey
-                        real(kind=REAL64), dimension(2)                       :: current_pos, current_acc
+                        integer(kind=INT32)                                               :: i,j
+                        real(kind=REAL64),  dimension(:,:), allocatable, intent(in)       :: Ex,Ey
+                        real(kind=REAL64), dimension(2)                                   :: current_pos, current_acc
 
                         allocate(Ex(nx,ny))
                         allocate(Ey(nx,ny))
