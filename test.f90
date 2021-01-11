@@ -6,6 +6,7 @@ PROGRAM Main
   USE command_line
   !USE domain_tools
   USE ERROR_CALC
+  USE GAUSSIAN 
 
   IMPLICIT NONE 
 
@@ -27,8 +28,8 @@ PROGRAM Main
   nx = 100
   ny= 100
   
-  dy = 2.0_REAL64/(nx-1) 
-  dx = 2.0_REAL64/(ny-1)
+  dx = 2.0_REAL64/(nx-1) 
+  dy = 2.0_REAL64/(ny-1)
   dt = 0.1_REAL64
   
   ALLOCATE(problem(1:nx, 1:ny))
@@ -42,13 +43,13 @@ PROGRAM Main
   ELSE IF (init_states == 'single') THEN 
     DO i = 1, nx 
       DO j = 1, ny 
-        problem(i,j) = EXP(-((dx*(i-1)-1)/0.1_REAL64)**2-((dy*(j-1)-1)/0.1_REAL64)**2)
+        problem(i,j) = g(i,j,dx,dy,0.1_REAL64, 0.0_REAL64)
       END DO
     END DO
   ELSE IF (init_states == 'double')
     DO i = 1, nx 
       DO j = 1, ny
-        problem(i,j)=EXP(-((h*(i-1)-1+0.25_REAL64)/0.1_REAL64)**2-((k*(j-1)-1+0.25_REAL64)/0.1_REAL64)**2)+EXP(-((h*(i-1)-1-0.75_REAL64)/0.2_REAL64)**2-((k*(j-1)-1-0.75_REAL64)/0.2_REAL64)**2)
+        problem(i,j)=g(i,j,dx,dy,0.1_REAL64, 0.25_REAL64)+g(i,j,dx,dy,0.2_REAL64, -0.75_REAL64)
       END DO
     END DO 
   ELSE 
