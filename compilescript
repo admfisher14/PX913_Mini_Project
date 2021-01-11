@@ -1,6 +1,6 @@
 #!/bin/bash
 
-myprogramfiles="total_err.f90 eq_field.f90 VelocityVerlet.f90 test.f90"
+myprogramfiles="total_err.f90 eq_field.f90 VelocityVerlet.f90 command_line.f90 gaussian.f90 test.f90"
 
 outfile="program.out"
 
