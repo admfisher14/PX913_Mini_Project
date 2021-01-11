@@ -3,7 +3,7 @@ PROGRAM Main
   USE ISO_FORTRAN_ENV
   USE EQ_FIELD
   USE velocity_verlet  
-  !USE command_line
+  USE command_line
   !USE domain_tools
   USE ERROR_CALC
 
