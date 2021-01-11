@@ -24,9 +24,9 @@ PROGRAM Main
   init_pos(2) = 0.1_REAL64
   init_vel = 0.0_REAL64
 
-
-  nx = 100
-  ny= 100
+  CALL parse_args 
+  success = get_arg("nx", nx)
+  success = get_arg("ny", ny)
   
   dx = 2.0_REAL64/(nx-1) 
   dy = 2.0_REAL64/(ny-1)
@@ -35,7 +35,6 @@ PROGRAM Main
   ALLOCATE(problem(1:nx, 1:ny))
   ALLOCATE(solution(0:nx+1, 0:ny+1))
   
-  CALL parse_args 
   success = get_arg("init", init_states)
   
   IF (init_states == 'null') THEN 
