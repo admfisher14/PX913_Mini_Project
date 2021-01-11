@@ -7,12 +7,13 @@ PROGRAM Main
   !USE domain_tools
   USE ERROR_CALC
   USE GAUSSIAN 
+  use write_netcdf
 
   IMPLICIT NONE 
 
   LOGICAL :: success 
   CHARACTER(LEN=20) :: init_states
-  INTEGER(INT32) :: nx, ny ,i,j
+  INTEGER(INT32) :: nx, ny ,i,j,ierr
   REAL(REAL64), DIMENSION(:,:), ALLOCATABLE :: problem, solution
   REAL(REAL64) :: dx,dy,dt,error
   REAL(REAL64), DIMENSION(2) :: init_pos,init_vel, init_acc
@@ -61,29 +62,6 @@ PROGRAM Main
 
   CALL verlet_solver(solution, init_pos,init_vel,init_acc,pos_hist,vel_hist,acc_hist,dx,dy,dt,nx,ny,Ex,Ey)
   
-   open(11,file="positions.txt",status='replace')
-
-  do i = 0,1000
-    write(11,*) pos_hist(i,:)
-  end do
-
-  close(11)
- 
-  open(12,file="velocities.txt",status='replace')
-
-  do i = 0,1000
-    write(12,*) vel_hist(i,:)
-  end do
-
-  close(12)
-
-    open(13,file="acceleration.txt",status='replace')
-
-  do i = 0,1000
-    write(13,*) acc_hist(i,:)
-  end do
-
-  close(13)
- 
+  call writer_prototype(rho,phi,pos_hist, vel_hist, acc_hist,"results.nc",init,nx,ny,Ex,Ey,ierr)
  
 END PROGRAM Main
