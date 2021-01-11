@@ -53,14 +53,13 @@ PROGRAM Main
     END DO 
   ELSE 
     PRINT*, 'Please choose from null, single or double.'
-  END IF
   
   !solution = f_c(problem, X, Y)
   
   solution = f_c(problem, dx,dy,nx,ny)
   
 
-  CALL verlet_solver(solution, init_pos,init_vel,init_acc,pos_hist,vel_hist,acc_hist,dx,dy,dt,nx,ny)
+  CALL verlet_solver(solution, init_pos,init_vel,init_acc,pos_hist,vel_hist,acc_hist,dx,dy,dt,nx,ny,Ex,Ey)
   
    open(11,file="positions.txt",status='replace')
 
