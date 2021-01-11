@@ -11,23 +11,22 @@ MODULE write_netcdf
   
     ! This module contains code used and modified from workshop 7 of the px913 course 
   
-    SUBROUTINE writer_prototype(larr,pos_hist, vel_hist, acc_hist,filename,init,nx,ny ierr)
-  
-      INTEGER, INTENT(IN), DIMENSION(:,:) :: larr
+    SUBROUTINE writer_prototype(rho,phi,pos_hist, vel_hist, acc_hist,filename,init,nx,ny,Ex,Ey,ierr)
+      INTEGER, INTENT(IN), DIMENSION(:,:) :: rho,phi,ex,ey
       INTEGER, PARAMETER :: ndims = 2
       ! We can use this parameter here, which makes it easier to
       ! replicate this function for different dimensionalities
-      INTEGER, DIMENSION(ndims) :: sizes, dim_ids,pos_size,vel_size,acc_size,hist_ids
+      INTEGER, DIMENSION(ndims) :: sizes, dim_ids,hist_ids,pos_size
       CHARACTER(LEN=1), DIMENSION(ndims) :: dims=(/"x", "y" /)
-      CHARACTER(LEN=1), DIMENSION(ndims) :: hist_dims=(/"x,y", "t" /)
+      CHARACTER(LEN=3), DIMENSION(ndims) :: hist_dims=(/"x,y", "tim" /)
       CHARACTER(LEN=*), INTENT(IN) :: filename
-      INTEGER :: ierr, file_id, var_id, i,ac_id,ac_dims,pos_id,vel_id,acc_id
+      INTEGER :: ierr, file_id, var_id, i,ac_id,ac_dims,pos_id,vel_id,acc_id,phi_id,ex_id,ey_id,nx,ny
       CHARACTER(LEN=10) :: init
       REAL(REAL64), DIMENSION(0:1000,2) ::  pos_hist, vel_hist, acc_hist
       
   
   
-      sizes = SHAPE(larr)
+      sizes = SHAPE(rho)
       pos_size = shape(pos_hist)
 
   
@@ -70,7 +69,7 @@ MODULE write_netcdf
           PRINT*, TRIM(nf90_strerror(ierr))
           RETURN
         END IF
-        ierr = nf90_def_dim(file_id, hist_dims(i), pos_sizes(i), hist_ids(i))
+        ierr = nf90_def_dim(file_id, hist_dims(i), pos_size(i), hist_ids(i))
         IF (ierr /= nf90_noerr) THEN
           PRINT*, TRIM(nf90_strerror(ierr))
           RETURN
@@ -81,11 +80,29 @@ MODULE write_netcdf
 
   
       ! Define variable type, matching our array
-      ierr = nf90_def_var(file_id, "solution", NF90_REAL, dim_ids, var_id)
+      ierr = nf90_def_var(file_id, "rho", NF90_REAL, dim_ids, var_id)
       IF (ierr /= nf90_noerr) THEN
         PRINT*, TRIM(nf90_strerror(ierr))
         RETURN
       END IF
+
+      ierr = nf90_def_var(file_id, "phi", NF90_REAL, dim_ids, phi_id)
+      IF (ierr /= nf90_noerr) THEN
+        PRINT*, TRIM(nf90_strerror(ierr))
+        RETURN
+      END IF  
+
+      ierr = nf90_def_var(file_id, "ex", NF90_REAL, dim_ids, ex_id)
+      IF (ierr /= nf90_noerr) THEN
+        PRINT*, TRIM(nf90_strerror(ierr))
+        RETURN
+      END IF
+
+      ierr = nf90_def_var(file_id, "ey", NF90_REAL, dim_ids, ey_id)
+      IF (ierr /= nf90_noerr) THEN
+        PRINT*, TRIM(nf90_strerror(ierr))
+        RETURN
+      END IF  
   
       ierr = nf90_def_var(file_id, "pos", NF90_REAL, hist_ids, pos_id)
       IF (ierr /= nf90_noerr) THEN
@@ -113,11 +130,30 @@ MODULE write_netcdf
   
   
       ! Actually write the variable
-      ierr = nf90_put_var(file_id, var_id, larr)
+      ierr = nf90_put_var(file_id, var_id, rho)
       IF (ierr /= nf90_noerr) THEN
         PRINT*, TRIM(nf90_strerror(ierr))
         RETURN
       END IF
+
+      ierr = nf90_put_var(file_id, phi_id, phi)
+      IF (ierr /= nf90_noerr) THEN
+        PRINT*, TRIM(nf90_strerror(ierr))
+        RETURN
+      END IF
+
+      ierr = nf90_put_var(file_id, var_id, ex)
+      IF (ierr /= nf90_noerr) THEN
+        PRINT*, TRIM(nf90_strerror(ierr))
+        RETURN
+      END IF
+
+      ierr = nf90_put_var(file_id, phi_id, ey)
+      IF (ierr /= nf90_noerr) THEN
+        PRINT*, TRIM(nf90_strerror(ierr))
+        RETURN
+      END IF
+
 
       ierr = nf90_put_var(file_id, pos_id, pos_hist)
       IF (ierr /= nf90_noerr) THEN
