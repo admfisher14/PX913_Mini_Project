@@ -40,7 +40,8 @@ MODULE ERROR_CALC
       END DO 
     END DO 
 
-!If d_rms is non zero then to take the square root and calculate the ratio of total error and d_rms, otherwise just gives that the ratio is 0.
+!If d_rms is non zero then to take the square root and calculate the ratio of total error and d_rms, otherwise just gives that the ratio is 0,
+!this justified because if d_rms=0 then all the terms all equal to zero so there is no point iterating as phi will just be zero.
     IF (d_rms > 0 ) THEN 
       d_rms = SQRT(d_rms) 
       err_calc = err_total / d_rms 
