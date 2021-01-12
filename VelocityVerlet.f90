@@ -12,8 +12,8 @@ module velocity_verlet
                         real(kind=REAL64)                                     :: dx,dy
                         real(kind=REAL64), dimension(:,:)                     :: Ex,Ey
 
-                        cell_x = floor((exact_pos(1) +1)/dx) + 1 !>I know the pdf says "-1.0_dp"
-                        cell_y = floor((exact_pos(2) +1)/dy) + 1 !>But the maths seems weird to me here. Correct
+                        cell_x = floor((exact_pos(1) +1.0_REAL64)/dx) + 1 !>I know the pdf says "-1.0_dp"
+                        cell_y = floor((exact_pos(2) +1.0_REAL64)/dy) + 1 !>But the maths seems weird to me here. Correct
 
                         acc(1) = -1.0_REAL64*Ex(cell_x,cell_y)
                         acc(2) = -1.0_REAL64*Ey(cell_x,cell_y)
@@ -44,14 +44,14 @@ module velocity_verlet
 
                         do j = 1,ny
                           do i = 1,nx
-                            Ex(i,j) = (field(i+1,j) - field(i-1,j))/(2*dx)
+                            Ex(i,j) = (field(i+1,j) - field(i-1,j))/(2.0_REAL64*dx)
                           end do
                         end do
 
 
                         do i = 1,nx
                           do j = 1,ny
-                            Ey(i,j) = (field(i,j+1) - field(i,j-1))/(2*dy)
+                            Ey(i,j) = (field(i,j+1) - field(i,j-1))/(2.0_REAL64*dy)
                           end do
                         end do
                                   
@@ -75,11 +75,11 @@ module velocity_verlet
                            acc_hist(i,:) = acc_hist(i-1,:)
                         else
 
-                            pos_hist(i,:) = pos_hist(i-1,:) + vel_hist(i-1,:)*dt + 0.5*(acc_hist(i-1,:)**2)*dt**2
+                            pos_hist(i,:) = pos_hist(i-1,:) + vel_hist(i-1,:)*dt + 0.5_REAL64*(acc_hist(i-1,:)*acc_hist(i-1,:))*dt*dt
                             current_pos = pos_hist(i,:)
                             current_acc = get_acc(current_pos,dx,dy,Ex,Ey)
                             acc_hist(i,:) = current_acc
-                            vel_hist(i,:) = vel_hist(i-1,:) + 0.5*dt*(acc_hist(i,:)+acc_hist(i-1,:))
+                            vel_hist(i,:) = vel_hist(i-1,:) + 0.5_REAL64*dt*(acc_hist(i,:)+acc_hist(i-1,:))
                         end if
 
 
