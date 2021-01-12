@@ -9,4 +9,5 @@ fflags=`nf-config --fflags`
 flibs=`nf-config --flibs`
 
 $fc -I/usr/include/ -g $fflags $myprogramfiles $flibs -o $outfile -std=f2008 
-./$outfile nx=100 ny=100 init=null
+./$outfile nx=100 ny=100 init=double
+

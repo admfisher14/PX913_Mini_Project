@@ -44,14 +44,21 @@ PROGRAM Main
   success = get_arg("init", init_states)
   
   IF (init_states == 'null') THEN 
-    problem = 0.0_REAL64 
+    problem = 0.0_REAL64
+    init_pos = 0.0_REAL64
+    init_vel = 0.1_REAL64
+
   ELSE IF (init_states == 'single') THEN 
+    init_pos = (/0.1_REAL64,0.0_REAL64/)
+    init_vel = 0.0_REAL64
     DO i = 1, nx 
       DO j = 1, ny 
         problem(i,j) = g(i,j,dx,dy,0.1_REAL64, 0.0_REAL64)
       END DO
     END DO
   ELSE IF (init_states == 'double') THEN 
+    init_pos = (/ 0.0_REAL64, 0.5_REAL64/)
+    init_vel = 0.0_REAL64
     DO i = 1, nx 
       DO j = 1, ny
         problem(i,j)=g(i,j,dx,dy,0.1_REAL64, 0.25_REAL64)+g(i,j,dx,dy,0.2_REAL64, -0.75_REAL64)
@@ -59,6 +66,7 @@ PROGRAM Main
     END DO 
   ELSE 
     PRINT*, 'Please choose from null, single or double.'
+    STOP !Program should stop if an invalid input is entered.
   END IF
   
   !solution = f_c(problem, X, Y)
