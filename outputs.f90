@@ -142,13 +142,13 @@ MODULE write_netcdf
         RETURN
       END IF
 
-      ierr = nf90_put_var(file_id, var_id, ex)
+      ierr = nf90_put_var(file_id, ex_id, ex)
       IF (ierr /= nf90_noerr) THEN
         PRINT*, TRIM(nf90_strerror(ierr))
         RETURN
       END IF
 
-      ierr = nf90_put_var(file_id, phi_id, ey)
+      ierr = nf90_put_var(file_id, ey_id, ey)
       IF (ierr /= nf90_noerr) THEN
         PRINT*, TRIM(nf90_strerror(ierr))
         RETURN
