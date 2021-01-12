@@ -16,6 +16,6 @@ MODULE GAUSSIAN
    
     g = EXP(-((h*(x-1)-1+sigma)/rho)**2-((k*(y-1)-1 +sigma)/ rho)**2)
    
-  END FUNCTION
+  END FUNCTION g
 
 END MODULE
