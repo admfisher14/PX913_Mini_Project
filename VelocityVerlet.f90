@@ -83,7 +83,7 @@ module velocity_verlet
                         end if
 
 
-                            print*, pos_hist(i,:), acc_hist(i,:)
+                            !print*, pos_hist(i,:), acc_hist(i,:)
                         end do 
                 end subroutine
 end module

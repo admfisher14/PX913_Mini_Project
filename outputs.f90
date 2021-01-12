@@ -12,7 +12,7 @@ MODULE write_netcdf
     ! This module contains code used and modified from workshop 7 of the px913 course 
   
     SUBROUTINE writer_prototype(rho,phi,pos_hist, vel_hist, acc_hist,filename,init,nx,ny,Ex,Ey,ierr)
-      INTEGER, INTENT(IN), DIMENSION(:,:) :: rho,phi,ex,ey
+      REAL(kind=REAL64), INTENT(IN), DIMENSION(:,:) :: rho,phi,ex,ey
       INTEGER, PARAMETER :: ndims = 2
       ! We can use this parameter here, which makes it easier to
       ! replicate this function for different dimensionalities

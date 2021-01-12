@@ -14,7 +14,7 @@ PROGRAM Main
   LOGICAL :: success 
   CHARACTER(LEN=20) :: init_states
   INTEGER(INT32) :: nx, ny ,i,j,ierr
-  REAL(REAL64), DIMENSION(:,:), ALLOCATABLE :: problem, solution
+  REAL(REAL64), DIMENSION(:,:), ALLOCATABLE :: problem, solution,ex,ey
   REAL(REAL64) :: dx,dy,dt,error
   REAL(REAL64), DIMENSION(2) :: init_pos,init_vel, init_acc
   REAL(REAL64), DIMENSION(0:1000,2) ::  pos_hist, vel_hist, acc_hist
@@ -36,6 +36,9 @@ PROGRAM Main
   
   ALLOCATE(problem(1:nx, 1:ny))
   ALLOCATE(solution(0:nx+1, 0:ny+1))
+
+  ALLOCATE(ex(1:nx, 1:ny))
+  ALLOCATE(ey(1:nx, 1:ny))
   
   !Depending on which initial condition the user wants it creates the respective condition here problem = rho
   success = get_arg("init", init_states)
@@ -48,7 +51,7 @@ PROGRAM Main
         problem(i,j) = g(i,j,dx,dy,0.1_REAL64, 0.0_REAL64)
       END DO
     END DO
-  ELSE IF (init_states == 'double')
+  ELSE IF (init_states == 'double') THEN 
     DO i = 1, nx 
       DO j = 1, ny
         problem(i,j)=g(i,j,dx,dy,0.1_REAL64, 0.25_REAL64)+g(i,j,dx,dy,0.2_REAL64, -0.75_REAL64)
@@ -67,6 +70,6 @@ PROGRAM Main
 
   CALL verlet_solver(solution, init_pos,init_vel,init_acc,pos_hist,vel_hist,acc_hist,dx,dy,dt,nx,ny,Ex,Ey)
   
-  call writer_prototype(rho,phi,pos_hist, vel_hist, acc_hist,"results.nc",init,nx,ny,Ex,Ey,ierr)
+  call writer_prototype(problem,solution(1:nx,1:ny),pos_hist, vel_hist, acc_hist,"results.nc",init_states,nx,ny,Ex,Ey,ierr)
  
 END PROGRAM Main
