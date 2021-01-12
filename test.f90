@@ -56,6 +56,7 @@ PROGRAM Main
     END DO 
   ELSE 
     PRINT*, 'Please choose from null, single or double.'
+  END IF
   
   !solution = f_c(problem, X, Y)
   
