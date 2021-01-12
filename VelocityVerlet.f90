@@ -36,7 +36,7 @@ module velocity_verlet
                         integer(kind=INT32),                    intent(in)    :: nx,ny
 
                         integer(kind=INT32)                                               :: i,j
-                        real(kind=REAL64),  dimension(:,:), allocatable, intent(in)       :: Ex,Ey
+                        real(kind=REAL64),  dimension(:,:), allocatable, intent(out)      :: Ex,Ey
                         real(kind=REAL64), dimension(2)                                   :: current_pos, current_acc
 
                         allocate(Ex(nx,ny))
