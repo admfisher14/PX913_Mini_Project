@@ -1,7 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
 
-# In[1]:
 
 
 import numpy as np 
@@ -10,10 +7,9 @@ import matplotlib.pyplot as plt
 from netCDF4 import Dataset
 
 rootgrp = Dataset("results.nc", "a", format="NETCDF4")
-print (rootgrp)
 
 
-# In[11]:
+
 
 
 pos = np.array(rootgrp.variables['pos'][:])
@@ -23,9 +19,7 @@ ex = np.array(rootgrp.variables['ex'][:])
 #print(np.std(ex))
 
 
-# In[23]:
-
-
+plt.figure
 plt.axes()
 plt.axis("square")
 plt.axis([-1,1,-1,1])
@@ -33,16 +27,14 @@ plt.scatter(pos[0],pos[1],1)
 plt.xlabel("x")
 plt.ylabel("y")
 plt.title("Position History of the Particle")
-plt.show()
 
-
-# In[32]:
+plt.figure()
 
 
 x = np.linspace(-1,1,np.shape(ex)[0]+1)
 y = np.linspace(-1,1,np.shape(ex)[0]+1)
 
- 
+
 
 plt.axes()
 plt.axis("square")
@@ -54,14 +46,6 @@ plt.ylabel("y")
 plt.title(r"$\frac{\partial \phi}{\partial x}$, $E_x$",size =20)
 plt.show()
 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
 
 
 
