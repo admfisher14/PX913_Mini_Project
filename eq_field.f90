@@ -27,7 +27,6 @@ MODULE EQ_FIELD
 !This is the initial field charge at iteration t = 0, one can change it but it should converge no matter the initial condition.
     f_c = 0.0_REAL64
 
-
 !This do while loops does the finite difference until a certain tolerance is met.     
     DO 
       DO i =  1, nx  
@@ -36,7 +35,6 @@ MODULE EQ_FIELD
         END DO 
       END DO 
       tot_err = err_calc(f_c, rho, dx, dy, nx, ny)
-      print*, tot_err
       IF (tot_err < tol) EXIT  
     END DO 
     
