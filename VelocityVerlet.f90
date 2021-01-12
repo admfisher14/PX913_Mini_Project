@@ -43,9 +43,12 @@ module velocity_verlet
                         allocate(Ey(nx,ny))
 
                         do j = 1,ny
+                          
                           do i = 1,nx
                             Ex(i,j) = (field(i+1,j) - field(i-1,j))/(2.0_REAL64*dx)
+                          
                           end do
+                          
                         end do
 
 
@@ -75,7 +78,8 @@ module velocity_verlet
                            acc_hist(i,:) = acc_hist(i-1,:)
                         else
 
-                            pos_hist(i,:) = pos_hist(i-1,:) + vel_hist(i-1,:)*dt + 0.5_REAL64*(acc_hist(i-1,:)*acc_hist(i-1,:))*dt*dt
+                            pos_hist(i,:) = pos_hist(i-1,:) + vel_hist(i-1,:)*dt + &
+                             0.5_REAL64*(acc_hist(i-1,:)*acc_hist(i-1,:))*dt*dt 
                             current_pos = pos_hist(i,:)
                             current_acc = get_acc(current_pos,dx,dy,Ex,Ey)
                             acc_hist(i,:) = current_acc
