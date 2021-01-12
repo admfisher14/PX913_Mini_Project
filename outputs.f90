@@ -80,41 +80,41 @@ MODULE write_netcdf
 
   
       ! Define variable type, matching our array
-      ierr = nf90_def_var(file_id, "rho", NF90_REAL, dim_ids, var_id)
+      ierr = nf90_def_var(file_id, "rho", NF90_DOUBLE, dim_ids, var_id)
       IF (ierr /= nf90_noerr) THEN
         PRINT*, TRIM(nf90_strerror(ierr))
         RETURN
       END IF
 
-      ierr = nf90_def_var(file_id, "phi", NF90_REAL, dim_ids, phi_id)
+      ierr = nf90_def_var(file_id, "phi", NF90_DOUBLE, dim_ids, phi_id)
       IF (ierr /= nf90_noerr) THEN
         PRINT*, TRIM(nf90_strerror(ierr))
         RETURN
       END IF  
 
-      ierr = nf90_def_var(file_id, "ex", NF90_REAL, dim_ids, ex_id)
+      ierr = nf90_def_var(file_id, "ex", NF90_DOUBLE, dim_ids, ex_id)
       IF (ierr /= nf90_noerr) THEN
         PRINT*, TRIM(nf90_strerror(ierr))
         RETURN
       END IF
 
-      ierr = nf90_def_var(file_id, "ey", NF90_REAL, dim_ids, ey_id)
+      ierr = nf90_def_var(file_id, "ey", NF90_DOUBLE, dim_ids, ey_id)
       IF (ierr /= nf90_noerr) THEN
         PRINT*, TRIM(nf90_strerror(ierr))
         RETURN
       END IF  
   
-      ierr = nf90_def_var(file_id, "pos", NF90_REAL, hist_ids, pos_id)
+      ierr = nf90_def_var(file_id, "pos", NF90_DOUBLE, hist_ids, pos_id)
       IF (ierr /= nf90_noerr) THEN
         PRINT*, TRIM(nf90_strerror(ierr))
         RETURN
       END IF
-      ierr = nf90_def_var(file_id, "acc", NF90_REAL, hist_ids, acc_id)
+      ierr = nf90_def_var(file_id, "acc", NF90_DOUBLE, hist_ids, acc_id)
       IF (ierr /= nf90_noerr) THEN
         PRINT*, TRIM(nf90_strerror(ierr))
         RETURN
       END IF
-      ierr = nf90_def_var(file_id, "vel", NF90_REAL, hist_ids, vel_id)
+      ierr = nf90_def_var(file_id, "vel", NF90_DOUBLE, hist_ids, vel_id)
       IF (ierr /= nf90_noerr) THEN
         PRINT*, TRIM(nf90_strerror(ierr))
         RETURN
