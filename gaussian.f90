@@ -1,4 +1,4 @@
-!Simple module that gives the creates the Gaussian function
+!Simple module that gives the value ofthe Gaussian function given the x y coordinates 
 MODULE GAUSSIAN
 
   USE ISO_FORTRAN_ENV
