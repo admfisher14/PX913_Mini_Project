@@ -13,6 +13,7 @@ PROGRAM Main
 
   LOGICAL :: success 
   CHARACTER(LEN=20) :: init_states
+  !nx,ny are for storing the number of grid points the user wants.
   INTEGER(INT32) :: nx, ny ,i,j,ierr
   REAL(REAL64), DIMENSION(:,:), ALLOCATABLE :: problem, solution,ex,ey
   REAL(REAL64) :: dx,dy,dt,error
@@ -25,11 +26,12 @@ PROGRAM Main
   init_pos(2) = 0.1_REAL64
   init_vel = 0.0_REAL64
 
-  !Using the command line module provide Chris Brady to get user input for nx and ny
+  !Using the command line module provide by @Heather to get user input for nx and ny
   CALL parse_args 
   success = get_arg("nx", nx)
   success = get_arg("ny", ny)
   
+  !This is the distance between any two consecutive grid points, note we have used equal spacing.
   dx = 2.0_REAL64/(nx-1) 
   dy = 2.0_REAL64/(ny-1)
   dt = 0.1_REAL64
@@ -40,7 +42,8 @@ PROGRAM Main
   ALLOCATE(ex(1:nx, 1:ny))
   ALLOCATE(ey(1:nx, 1:ny))
   
-  !Depending on which initial condition the user wants it creates the respective condition here problem = rho
+  !Depending on which initial condition the user wants it creates the respective condition here problem = rho.
+  !Also depending on the initial conditions, one can also change the initial position and velocity of the particle.
   success = get_arg("init", init_states)
   
   IF (init_states == 'null') THEN 
@@ -68,16 +71,16 @@ PROGRAM Main
     PRINT*, 'Please choose from null, single or double.'
     STOP !Program should stop if an invalid input is entered.
   END IF
+ 
+  !In this code solution = phi and problem = rho
   
-  !solution = f_c(problem, X, Y)
-  
-  !solution = phi
-  
+  !To calculate phi
   solution = f_c(problem, dx,dy,nx,ny)
   
-
+  !To apply the velocity Verlet algorythm
   CALL verlet_solver(solution, init_pos,init_vel,init_acc,pos_hist,vel_hist,acc_hist,dx,dy,dt,nx,ny,Ex,Ey)
   
+  !Creates the netcdf file that stores all the relevant data.
   call writer_prototype(problem,solution(1:nx,1:ny),pos_hist, vel_hist, acc_hist,"results.nc",init_states,nx,ny,Ex,Ey,ierr)
  
 END PROGRAM Main
