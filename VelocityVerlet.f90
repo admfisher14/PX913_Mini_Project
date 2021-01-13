@@ -4,7 +4,7 @@ module velocity_verlet
 
         contains
         
-                !>function for working out the indices for the cell's current position
+                !>function for working out the acceleration from the cell's current position
                 
                 function  get_acc(exact_pos,dx,dy,Ex,Ey) result (acc)
                         real(kind=REAL64), dimension(2)                       :: exact_pos,acc
@@ -12,10 +12,10 @@ module velocity_verlet
                         real(kind=REAL64)                                     :: dx,dy
                         real(kind=REAL64), dimension(:,:)                     :: Ex,Ey
 
-                        cell_x = floor((exact_pos(1) +1.0_REAL64)/dx) + 1 !>I know the pdf says "-1.0_dp"
-                        cell_y = floor((exact_pos(2) +1.0_REAL64)/dy) + 1 !>But the maths seems weird to me here. Correct
+                        cell_x = floor((exact_pos(1) +1.0_REAL64)/dx) + 1 !>Mathematical formula provided in pdf for calculating
+                        cell_y = floor((exact_pos(2) +1.0_REAL64)/dy) + 1 !>particle position appears to be slightly wrong
 
-                        acc(1) = -1.0_REAL64*Ex(cell_x,cell_y)
+                        acc(1) = -1.0_REAL64*Ex(cell_x,cell_y)      !> Calculating acceleration based on potential gradient in x and y directions
                         acc(2) = -1.0_REAL64*Ey(cell_x,cell_y)
                                                                     
 
@@ -30,48 +30,48 @@ module velocity_verlet
                                                                                  !two 2D ones?
 
                         real(kind=REAL64),  dimension(2),       intent(in)    :: init_pos, init_vel !initial conditions
-                        real(kind=REAL64),  dimension(2),       intent(inout) :: init_acc
+                        real(kind=REAL64),  dimension(2),       intent(inout) :: init_acc !to be calculated inside the function
                         real(kind=REAL64),  dimension(0:1000,2),intent(out)   :: pos_hist, vel_hist, acc_hist !time histories
-                        real(kind=REAL64),                      intent(in)    :: dt,dx,dy !pass it as a type? feels clunky
-                        integer(kind=INT32),                    intent(in)    :: nx,ny
+                        real(kind=REAL64),                      intent(in)    :: dt,dx,dy 
+                        integer(kind=INT32),                    intent(in)    :: nx,ny 
 
-                        integer(kind=INT32)                                               :: i,j
-                        real(kind=REAL64),  dimension(:,:), allocatable, intent(out)      :: Ex,Ey
-                        real(kind=REAL64), dimension(2)                                   :: current_pos, current_acc
-
+                        integer(kind=INT32)                                             :: i,j 
+                        real(kind=REAL64),  dimension(:,:), allocatable, intent(out)    :: Ex,Ey
+                        real(kind=REAL64), dimension(2) :: current_pos, current_acc
+                        
+                        
+                        !> Allocation and calculation of potential gradients in the x and y directions using finite differences
+                        
                         allocate(Ex(nx,ny))
                         allocate(Ey(nx,ny))
 
                         do j = 1,ny
-                          
                           do i = 1,nx
                             Ex(i,j) = (field(i+1,j) - field(i-1,j))/(2.0_REAL64*dx)
-                          
                           end do
-                          
                         end do
-
-
+                        
                         do i = 1,nx
                           do j = 1,ny
                             Ey(i,j) = (field(i,j+1) - field(i,j-1))/(2.0_REAL64*dy)
                           end do
                         end do
                                   
-
-
                         pos_hist(0,:) = init_pos   !Adding initial conditions
                         vel_hist(0,:) = init_vel
-                       
+                        
+        
                         init_acc = get_acc(init_pos,dx,dy,Ex,Ey)
                 
 
 
                         acc_hist(0,:) = init_acc
 
-                        !Actual Velocity Verlet Algorithm
+                        !> Actual Velocity Verlet Algorithm, calculating displacement, velocity and acceleration
+                        !> at each timestep and appending it onto the velocity histories
 
                         do i = 1,1000
+                        !> If-else statement stops the particle from moving if the particle moves out of bounds.
                         if (ABS(pos_hist(i-1,1)) > 1.0_REAL64 .OR. ABS(pos_hist(i-1,2)) > 1.0_REAL64) then
                            pos_hist(i,:) = pos_hist(i-1,:)
                            vel_hist(i,:) = vel_hist(i-1,:)
@@ -86,8 +86,6 @@ module velocity_verlet
                             vel_hist(i,:) = vel_hist(i-1,:) + 0.5_REAL64*dt*(acc_hist(i,:)+acc_hist(i-1,:))
                         end if
 
-
-                            !print*, pos_hist(i,:), acc_hist(i,:)
                         end do 
                 end subroutine
 end module
