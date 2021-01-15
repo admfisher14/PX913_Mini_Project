@@ -6,18 +6,13 @@ import matplotlib
 import matplotlib.pyplot as plt
 from netCDF4 import Dataset
 
+#Importing data from NetCDF
 rootgrp = Dataset("results.nc", "a", format="NETCDF4")
-
-
-
-
-
 pos = np.array(rootgrp.variables['pos'][:])
 ex = np.array(rootgrp.variables['ex'][:])
 
-#ex = ex/(10**36)
-#print(np.std(ex))
 
+#Plotting position history
 
 plt.figure
 plt.axes()
@@ -31,10 +26,12 @@ plt.title("Position History of the Particle")
 plt.figure()
 
 
+#Setting up axes for positions for E_x
 x = np.linspace(-1,1,np.shape(ex)[0]+1)
-y = np.linspace(-1,1,np.shape(ex)[0]+1)
+y = np.linspace(-1,1,np.shape(ex)[1]+1)
 
 
+#Plotting E_x as a psuedocolour graph
 
 plt.axes()
 plt.axis("square")
